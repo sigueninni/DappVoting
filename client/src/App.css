@@ -1,0 +1,13 @@
+@import url('http://fonts.googleapis.com/css?family=Roboto');
+
+#App {
+  font-family: 'Roboto', sans-serif;
+}
+
+#VotingDashboard_main{
+  display: flex;
+}
+
+#VotingDashboard_main .column{
+ flex: 50%;;
+}
