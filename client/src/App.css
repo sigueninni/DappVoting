@@ -2,6 +2,14 @@
 
 #App {
   font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+    line-height: 1.5;
+    letter-spacing: 0;
+    font-family: "IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+#Header{
+  padding: 5px;
 }
 
 #VotingDashboard_main{

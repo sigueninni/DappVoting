@@ -5,7 +5,7 @@ import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title A voting contract
 /// @author Cyril Castagnet
-/// @notice You can use this contract for TP3 - Rinkeby
+/// @notice To be used  for TP3 - Rinkeby
 /// @dev Inherits the OpenZepplin Ownable contract
 contract Voting is Ownable {
 

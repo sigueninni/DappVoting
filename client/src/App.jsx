@@ -1,7 +1,9 @@
 import { EthProvider } from "./contexts/EthContext";
 import "./App.css";
 import VotingDashboard from "./components/VotingDashboard";
-import React from "react";
+
+
+
 
 function App() {
   return (

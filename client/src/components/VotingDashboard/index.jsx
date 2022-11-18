@@ -7,17 +7,20 @@ import Content from './Content';
 function VotingDashboard() {
   const { state: { contract, accounts, owner } } = useEth();
   const [isOwner, setIsOwner] = useState(false);
+  const [WorkflowStatus, setWorkflowStatus] = useState(0);
   //const [isVoter, setIsVoter] = useState(false);
 
 
-  const setLocalContext = async () => {
+  const refreshLocalContext = async () => {
     owner === accounts[0] ? setIsOwner(true) : setIsOwner(false);
+    const WorkflowStatus = await contract.methods.workflowStatus().call({ from: accounts[0] });
+    setWorkflowStatus(WorkflowStatus);
   }
 
   useEffect(() => {
+    
     if (contract?.methods) {
-      setLocalContext();
-      console.log("useEffect");
+      refreshLocalContext();
     }
   }, [contract]);
 
@@ -27,8 +30,8 @@ function VotingDashboard() {
       <Header />
       {isOwner ? <div>Owner</div> : <div>Pas Owner</div>}
       <div id="VotingDashboard_main">
-        <Content />
-        {/* <TimeLine />  */}
+        <Content  isOwner={isOwner} WorkflowStatus = {WorkflowStatus}/>
+        <TimeLine isOwner={isOwner}/>
       </div>
 
     </div>
