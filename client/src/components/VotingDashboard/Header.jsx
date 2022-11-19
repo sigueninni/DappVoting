@@ -11,7 +11,7 @@ function Header() {
 
   return (
     <div id="Header">
-       {accounts && accounts[0] && <Chip variant="filled" label={accounts[0]} color="primary" icon={<PersonIcon />} />}
+       {accounts && accounts[0] && <Chip variant="outlined" label={accounts[0]} color="secondary" icon={<PersonIcon />} />}
         <br />
         {accounts && accounts[0] && <pre>{accounts[0]}</pre>}
     </div>

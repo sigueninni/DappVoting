@@ -19,3 +19,9 @@
 #VotingDashboard_main .column{
  flex: 50%;;
 }
+
+#VotingTimeLine_main{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

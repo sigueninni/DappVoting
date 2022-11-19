@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import Header from './Header';
-import TimeLine from './TimeLine';
+import VotingTimeLine from './VotingTimeLine';
 import Content from './Content';
 
 function VotingDashboard() {
@@ -31,7 +31,7 @@ function VotingDashboard() {
       {isOwner ? <div>Owner</div> : <div>Pas Owner</div>}
       <div id="VotingDashboard_main">
         <Content  isOwner={isOwner} WorkflowStatus = {WorkflowStatus}/>
-        <TimeLine isOwner={isOwner}/>
+        <VotingTimeLine isOwner={isOwner} WorkflowStatus = {WorkflowStatus}/>
       </div>
 
     </div>
