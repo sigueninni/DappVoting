@@ -1,5 +1,8 @@
 import useEth from "../../contexts/EthContext/useEth";
 import { useState, useEffect } from "react";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import RepeatIcon from '@mui/icons-material/Repeat';
 
 
 function Content({ isOwner, WorkflowStatus }) {
@@ -53,8 +56,10 @@ function Content({ isOwner, WorkflowStatus }) {
       {/* WorkflowStatus at  RegisteringVoters */}
       {isOwner && WorkflowStatus == 0 &&
         < div >
-          <button onClick={startProposalsRegistering}>start Proposals Registering</button>
-          <button onClick={addVoter}>add a Voter</button>
+          <Stack direction="row" spacing={2}>
+            <Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={startProposalsRegistering}>start Proposals Registering</Button>
+            <Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={addVoter}>add a Voter</Button>
+          </Stack>
         </div>
 
       }
@@ -62,38 +67,38 @@ function Content({ isOwner, WorkflowStatus }) {
       {/* WorkflowStatus at  ProposalsRegistrationStarted */}
       {
         isOwner && WorkflowStatus == 1 &&
-        <div><button onClick={endProposalsRegistering}>end Proposals Registering</button> </div>
+        <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={endProposalsRegistering}>end Proposals Registering</Button> </div>
       }
 
       {/* WorkflowStatus at  ProposalsRegistrationEnded */}
       {
         isOwner && WorkflowStatus == 2 &&
-        <div><button onClick={startVotingSession}>start Voting Session</button> </div>
+        <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={startVotingSession}>start Voting Session</Button> </div>
       }
 
       {/* WorkflowStatus at  VotingSessionStarted */}
       {
         isOwner && WorkflowStatus == 3 &&
-        <div><button onClick={endVotingSession}>end Voting Session</button> </div>
+        <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={endVotingSession}>end Voting Session</Button> </div>
       }
 
       {/* WorkflowStatus at  VotingSessionEnded */}
       {
         isOwner && WorkflowStatus == 4 &&
-        <div><button onClick={tallyVotes}>tally Votes</button> </div>
+        <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={tallyVotes}>tally Votes</Button> </div>
       }
 
 
       {/*   *********************************************
       *************** Voter  *************************
       ********************************************* */}
-         {/* WorkflowStatus at  ProposalsRegistrationStarted */}
-         { isVoter && WorkflowStatus == 1 &&
-        <div><button onClick={addProposal}>add a Proposal</button> </div>
+      {/* WorkflowStatus at  ProposalsRegistrationStarted */}
+      {isVoter && WorkflowStatus == 1 &&
+        <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={addProposal}>add a Proposal</Button> </div>
       }
-      
-     { isVoter && WorkflowStatus == 3 &&
-        <div><button onClick={setVote}>Vote</button> </div>
+
+      {isVoter && WorkflowStatus == 3 &&
+        <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={setVote}>Vote</Button> </div>
       }
 
     </div >
