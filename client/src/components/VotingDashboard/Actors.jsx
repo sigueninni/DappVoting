@@ -7,9 +7,9 @@ import AlertTitle from '@mui/material/AlertTitle';
 import CardPerson from "./CardPerson";
 import Stack from '@mui/material/Stack';
 
-function Actors({ isOwner, isVoter }) {
+function Actors({ isOwner, isVoter , setIsVoter}) {
     const { state: { contract, accounts, owner } } = useEth();
-    const [voterData, setVoterData] = useState("");
+  //  const [voterData, setVoterData] = useState("");
     const [voterOldData, setVoterOldData] = useState("");
     let voters = [];
 
@@ -37,6 +37,10 @@ function Actors({ isOwner, isVoter }) {
           })();
     
     
+
+          if ([...voterOldData].filter(v => v.address == accounts[0]).length > 0) {
+            setIsVoter(true);
+          } else { setIsVoter(false); }
         }
     
       }, [contract, voterOldData, accounts]);
@@ -65,7 +69,6 @@ function Actors({ isOwner, isVoter }) {
     {isVoter && <div >
       <Stack sx={{ width: '100%' }} spacing={2}>
         <Alert severity="success">
-          <AlertTitle>Success</AlertTitle>
           Your are a<strong> Registered Voter!</strong>
         </Alert>
 

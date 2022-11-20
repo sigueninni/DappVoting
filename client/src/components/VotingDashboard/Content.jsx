@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import CardPerson from "./CardPerson";
 import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -15,6 +14,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Actors from './Actors';
+import Proposals from './Proposals';
 
 
 function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
@@ -35,16 +35,15 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
     openSb: false,
   });
   const { openSb, messageSb } = stateSb;
-
-
+  const [voterOldData, setVoterOldData] = useState("");
+  const [voterData, setVoterData] = useState("");
+   
   // *************************************************
   // *************    Events Handling    *************
   // *************************************************  
-  const [voterData, setVoterData] = useState("");
-  const [voterOldData, setVoterOldData] = useState("");
+  
   const [proposalData, setProposalData] = useState("");
   const [proposalOldDataDesc, setProposalOldDataDesc] = useState("");
-  const [proposalOldData, setProposalOldData] = useState("");
   const [wfEventData, setWfEventData] = useState("");
 
   useEffect(() => {
@@ -54,7 +53,7 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       (async function () {
 
 
-        let oldEvents = await contract.getPastEvents('VoterRegistered', {
+    /*  let oldEvents = await contract.getPastEvents('VoterRegistered', {
           fromBlock: 0,
           toBlock: 'latest'
         });
@@ -66,25 +65,8 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
           });
 
         });
-        setVoterOldData(voters);
-       
-
-        let oldEventsProposals = await contract.getPastEvents('ProposalRegistered', {
-          fromBlock: 0,
-          toBlock: 'latest'
-        });
-
-        oldEventsProposals.forEach(event => {
-          proposals.push({
-            address: accounts[0],
-            proposalId: event.returnValues.proposalId
-          });
-
-        });
-        setProposalOldData(proposals);
-
-
-
+        setVoterOldData(voters);  */
+      
         await contract.events.ProposalRegistered({ fromBlock: "earliest" })
         .on('data', event => {
           let _voterAddress = event.returnValues.voterAddress;
@@ -113,7 +95,6 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
             setStateSb({
               openSb: true, messageSb: wfText[_WorkflowStatus]
             });
-
           });
         //here other events to be catched
 
@@ -124,12 +105,12 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       })();
 
       //Setting isVoter
-      if ([...voterOldData].filter(v => v.address == accounts[0]).length > 0) {
+     /*  if ([...voterOldData].filter(v => v.address == accounts[0]).length > 0) {
         setIsVoter(true);
-      } else { setIsVoter(false); }
+      } else { setIsVoter(false); } */
     }
 
-  }, [contract, voterOldData, accounts]);
+  }, [contract,  accounts]); //voterOldData,
 
 
 
@@ -176,13 +157,13 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
   };
 
   const onAddNewProposal = () => {
-    debugger;
+    let proposalLegth = 0;
     if (inputProposal !== '') {
       const newProposal = { proposal: inputProposal };
-      //proposals.push(newProposal);
+      proposalLegth = proposalOldDataDesc.length + 1 ;
 
+      setProposalOldDataDesc(proposalOldDataDesc => [...proposalOldDataDesc, { proposalId : proposalLegth, address : accounts[0], proposal : inputProposal }]);
     
-    //  setProposalOldDataDesc()
 
       addProposal(inputProposal);
     }
@@ -366,34 +347,8 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       </div>
 
 
-    <Actors isOwner = {isOwner} isVoter = {isVoter} /> 
-    {/*    <div id="Content_main_actors" className="column50" >
-      
-        {isOwner && <div >
-          <CardPerson address={owner} />
-          {getVoters()}
-        </div>}
-       
-        {isVoter && <div >
-          <Stack sx={{ width: '100%' }} spacing={2}>
-            <Alert severity="success">
-              <AlertTitle>Success</AlertTitle>
-              Your are a<strong>Registered Voter!</strong>
-            </Alert>
-
-          </Stack>
-        </div>}
-        {!isVoter && !isOwner &&
-          <div >
-            <Stack sx={{ width: '100%' }} spacing={2}>
-              <Alert severity="error">
-                <AlertTitle>Error</AlertTitle>
-                Your are <strong>not Registered Voter!</strong>
-              </Alert>
-
-            </Stack>
-          </div>}
-      </div>*/}
+    <Actors isOwner = {isOwner} isVoter = {isVoter}  setIsVoter = {setIsVoter}/> 
+    <Proposals isVoter = {isVoter} proposalOldDataDesc={proposalOldDataDesc}/> 
 
     </div >
   );
