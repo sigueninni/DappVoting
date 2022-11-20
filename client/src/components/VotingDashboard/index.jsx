@@ -9,29 +9,38 @@ function VotingDashboard() {
   const [isOwner, setIsOwner] = useState(false);
   const [WorkflowStatus, setWorkflowStatus] = useState(0);
   //const [isVoter, setIsVoter] = useState(false);
+  let currentAddress ;
 
-
-  const refreshLocalContext = async () => {
-    owner === accounts[0] ? setIsOwner(true) : setIsOwner(false);
-    const WorkflowStatus = await contract.methods.workflowStatus().call({ from: accounts[0] });
-    setWorkflowStatus(WorkflowStatus);
-  }
 
   useEffect(() => {
     
     if (contract?.methods) {
       refreshLocalContext();
+      console.log("refresh du context");
     }
-  }, [contract]);
+    
+  }, [contract,currentAddress,WorkflowStatus]);
 
+  const refreshLocalContext = async () => {
+    currentAddress = accounts[0] ;
+    owner === accounts[0] ? setIsOwner(true) : setIsOwner(false);
+    let WorkflowStatus = await contract.methods.workflowStatus().call({ from: accounts[0] });
+    setWorkflowStatus(WorkflowStatus);
+  }
+
+
+  const onChangeWorkflowStatus = async () => {
+    let WorkflowStatus = await contract.methods.workflowStatus().call({ from: accounts[0] });
+    setWorkflowStatus(WorkflowStatus);
+  };
 
   return (
-    <div id="VotingDashboard">
+    <div id="VotingDashboard_main">
       <Header />
-      {isOwner ? <div>Owner</div> : <div>Pas Owner</div>}
-      <div id="VotingDashboard_main">
-        <Content  isOwner={isOwner} WorkflowStatus = {WorkflowStatus}/>
-        <VotingTimeLine isOwner={isOwner} WorkflowStatus = {WorkflowStatus}/>
+      {/* {isOwner ? <div>Owner</div> : <div>Pas Owner</div>} */}
+      <div id="VotingDashboard_content">
+        <Content  isOwner={isOwner} WorkflowStatus = {WorkflowStatus} onChangeWorkflowStatus={onChangeWorkflowStatus}/>
+        <VotingTimeLine isOwner={isOwner} WorkflowStatus = {WorkflowStatus} />
       </div>
 
     </div>

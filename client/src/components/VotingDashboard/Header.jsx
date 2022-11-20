@@ -10,11 +10,11 @@ function Header() {
   const { state: { accounts } } = useEth();
 
   return (
-    <div id="Header">
-       {accounts && accounts[0] && <Chip variant="outlined" label={accounts[0]} color="secondary" icon={<PersonIcon />} />}
-        <br />
-        {accounts && accounts[0] && <pre>{accounts[0]}</pre>}
-    </div>
+    <div id="Header_main">
+      <div id="Header_main_hero"></div>
+      <div id="Header_main_chip"> {accounts && accounts[0] && <Chip variant="outlined" label={accounts[0]} color="secondary" icon={<PersonIcon />} />}
+      </div></div>
+
   );
 }
 

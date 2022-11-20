@@ -12,6 +12,7 @@ import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import HotelIcon from '@mui/icons-material/Hotel';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import Typography from '@mui/material/Typography';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 
 
 export default function VotingTimeline({ isOwner, WorkflowStatus }) {
@@ -92,7 +93,7 @@ export default function VotingTimeline({ isOwner, WorkflowStatus }) {
 
 
   return (
-    <div id="VotingTimeLine_main">
+    <div id="VotingTimeLine_main" className="column30">
       <Timeline position="alternate">
         <TimelineItem>
           <TimelineSeparator>
@@ -104,90 +105,15 @@ export default function VotingTimeline({ isOwner, WorkflowStatus }) {
           <TimelineContent></TimelineContent>
         </TimelineItem>
         {getSteps()}
-        {/* <TimelineItem>
-          <TimelineSeparator>
-            <TimelineConnector />
-            <TimelineDot>
-              <FastfoodIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent >
-            <Typography variant="h6" >
-            Registering Voters
-            </Typography>
-          </TimelineContent>
-        </TimelineItem>
+
         <TimelineItem>
           <TimelineSeparator>
-            <TimelineConnector />
-            <TimelineDot color="primary">
-              <LaptopMacIcon />
-            </TimelineDot>
-            <TimelineConnector />
+            <TimelineDot color="secondary" variant="filled">
+              <DoneOutlineIcon />
+            </TimelineDot >
           </TimelineSeparator>
-          <TimelineContent >
-            <Typography variant="h6" component="span">
-            Proposals Registration started
-            </Typography>
-          </TimelineContent>
+          <TimelineContent></TimelineContent>
         </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineConnector />
-            <TimelineDot color="primary" variant="outlined">
-              <HotelIcon />
-            </TimelineDot>
-            <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-          </TimelineSeparator>
-          <TimelineContent >
-            <Typography variant="h6" >
-            Proposals Registration Ended
-            </Typography>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-            <TimelineDot color="secondary">
-              <RepeatIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent >
-            <Typography variant="h6" component="span">
-            Voting Session Started
-            </Typography>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-            <TimelineDot color="secondary">
-              <RepeatIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent >
-            <Typography variant="h6" component="span">
-            Voting Session Ended
-            </Typography>
-          </TimelineContent>
-        </TimelineItem>
-        <TimelineItem>
-          <TimelineSeparator>
-            <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-            <TimelineDot color="secondary">
-              <RepeatIcon />
-            </TimelineDot>
-            <TimelineConnector />
-          </TimelineSeparator>
-          <TimelineContent >
-            <Typography variant="h6" component="span">
-            Votes Tallied
-            </Typography>
-          </TimelineContent>
-        </TimelineItem> */}
       </Timeline>
     </div>
   );
