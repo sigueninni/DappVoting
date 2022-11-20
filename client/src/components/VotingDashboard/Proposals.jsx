@@ -2,14 +2,13 @@
 import * as React from 'react';
 import useEth from "../../contexts/EthContext/useEth";
 import { useState, useEffect } from "react";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import Radio from '@mui/material/Radio';
 
-function Proposals({ isVoter, proposalOldDataDesc }) {
+function Proposals({ isVoter, proposalOldDataDesc ,selectedVotedValue, setSelectedVotedValue }) {
     const { state: { contract, accounts, owner } } = useEth();
     const [proposalOldData, setProposalOldData] = useState([]);
     const [proposalDesc, setProposalDesc] = useState([]);
+    
     let proposals = [];
 
     useEffect(() => {
@@ -43,6 +42,20 @@ function Proposals({ isVoter, proposalOldDataDesc }) {
         }
 
     }, [contract, proposalOldData, accounts]);
+
+
+    const handleChange = (event) => {
+        setSelectedVotedValue(event.target.value);
+      };
+    
+      const controlProps = (item) => ({
+        checked: selectedVotedValue === item,
+        onChange: handleChange,
+        value: item,
+        name: 'color-radio-button-demo',
+        inputProps: { 'aria-label': item },
+      });
+
 
     const getOneProposal = async (_proposalId) => {
         const proposal = await contract.methods.getOneProposal(_proposalId).call({ from: accounts[0] });
@@ -79,8 +92,10 @@ function Proposals({ isVoter, proposalOldDataDesc }) {
         //getProposalsDes(proposals);
         return proposals.map((p, i) => {
             return (
-                <div key={i}>
-                    <FormControlLabel  control={<Checkbox color="secondary" />} label={p.proposalId} />
+                <div key={i}  id="proposals_main_radiogroup">
+                    {/* <FormControlLabel    control={<Checkbox color="secondary" />} label={p.proposalId} /> */}
+                    <div><Radio {...controlProps(p.proposalId)} color="secondary" size="medium" /> <span>{p.proposalId} </span></div>
+                    
                 </div>
             );
         });
@@ -89,12 +104,12 @@ function Proposals({ isVoter, proposalOldDataDesc }) {
 
     return (
 
-        <div id="Content_main_proposals" className="column50" >
+        <div id="Content_main_proposals"  >
             {/*  Voters and Owner Cars if Owner  */}
             {contract && isVoter && <div >
-                <FormGroup className='centered'>
+                <div className='centered' id="proposals_main_radiogroup">
                     {getProposals()}
-                </FormGroup>
+                </div>
 
 
             </div>}

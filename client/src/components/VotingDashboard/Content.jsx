@@ -30,6 +30,7 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
   const [openProposal, setOpenProposal] = React.useState(false);
   const [inputVoterAddress, setInputVoterAddress] = useState("");
   const [inputProposal, setInputProposal] = useState("");
+  const [selectedVotedValue, setSelectedVotedValue] = React.useState(0);
   const [stateSb, setStateSb] = React.useState({
     messageSb: '',
     openSb: false,
@@ -87,6 +88,15 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
             });
 
           });
+
+          await contract.events.Voted({ fromBlock: "earliest" })
+          .on('data', event => {
+            setStateSb({
+              openSb: true, messageSb: 'Has Voted!'
+            });
+
+          });
+
 
         await contract.events.WorkflowStatusChange({ fromBlock: "earliest" })
           .on('data', event => {
@@ -188,6 +198,13 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
     });
   };
 
+
+ const  getWinningProposalID = async () => {
+  const WinningProposalID = await contract.methods.winningProposalID().call({ from: accounts[0] });
+  alert(WinningProposalID);
+  
+};
+
   // *************************************************
   // *************    Owner actions    ***************
   // *************************************************
@@ -223,9 +240,10 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
     await contract.methods.addProposal(proposal).send({ from: accounts[0] });
   };
 
-  const setVote = async (voteId) => {
-    await contract.methods.setVote(voteId).send({ from: accounts[0] });
+  const setVote = async () => {
+    await contract.methods.setVote(selectedVotedValue).send({ from: accounts[0] });
   };
+
 
 
   return (
@@ -332,6 +350,11 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
           <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={tallyVotes}>tally Votes</Button> </div>
         }
 
+          {
+          isOwner && WorkflowStatus == 5 &&
+          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={getWinningProposalID}>get Winning Proposal</Button> </div>
+        }
+
 
         {/*   *********************************************
       *************** Voter  *************************
@@ -346,9 +369,13 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
         }
       </div>
 
+      {
+          isVoter && WorkflowStatus == 5 &&
+          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={getWinningProposalID}>get Winning Proposal</Button> </div>
+        }
 
     <Actors isOwner = {isOwner} isVoter = {isVoter}  setIsVoter = {setIsVoter}/> 
-    <Proposals isVoter = {isVoter} proposalOldDataDesc={proposalOldDataDesc}/> 
+    <Proposals isVoter = {isVoter} proposalOldDataDesc={proposalOldDataDesc} selectedVotedValue={selectedVotedValue} setSelectedVotedValue = {setSelectedVotedValue} /> 
 
     </div >
   );

@@ -79,6 +79,10 @@ margin: 10px;
   justify-content: center;
 }
 
+#proposals_main_radiogroup{
+  display: flex;
+  flex-direction: column;
+}
 
 #Header_main_hero{
   background-image: url(./assets/bgVoting.jpg);
