@@ -9,20 +9,20 @@ function VotingDashboard() {
   const [isOwner, setIsOwner] = useState(false);
   const [WorkflowStatus, setWorkflowStatus] = useState(0);
   //const [isVoter, setIsVoter] = useState(false);
-  let currentAddress ;
+  let currentAddress;
 
 
   useEffect(() => {
-    
+
     if (contract?.methods) {
       refreshLocalContext();
       console.log("refresh du context");
     }
-    
-  }, [contract,currentAddress,WorkflowStatus]);
+
+  }, [contract, currentAddress, WorkflowStatus]);
 
   const refreshLocalContext = async () => {
-    currentAddress = accounts[0] ;
+    currentAddress = accounts[0];
     owner === accounts[0] ? setIsOwner(true) : setIsOwner(false);
     let WorkflowStatus = await contract.methods.workflowStatus().call({ from: accounts[0] });
     setWorkflowStatus(WorkflowStatus);
@@ -39,8 +39,8 @@ function VotingDashboard() {
       <Header />
       {/* {isOwner ? <div>Owner</div> : <div>Pas Owner</div>} */}
       <div id="VotingDashboard_content">
-        <Content  isOwner={isOwner} WorkflowStatus = {WorkflowStatus} onChangeWorkflowStatus={onChangeWorkflowStatus}/>
-        <VotingTimeLine isOwner={isOwner} WorkflowStatus = {WorkflowStatus} />
+        <Content isOwner={isOwner} WorkflowStatus={WorkflowStatus} onChangeWorkflowStatus={onChangeWorkflowStatus} />
+        <VotingTimeLine isOwner={isOwner} WorkflowStatus={WorkflowStatus} />
       </div>
 
     </div>

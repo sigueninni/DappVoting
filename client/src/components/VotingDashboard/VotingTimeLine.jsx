@@ -21,44 +21,44 @@ export default function VotingTimeline({ isOwner, WorkflowStatus }) {
     {
       stepId: 0,
       stepLabel: "Registering Voters",
-      icon:"",
-      color:  "",
+      icon: "",
+      color: "",
       variant: "",
     }
     ,
     {
       stepId: 1,
       stepLabel: "Proposals Registration started",
-      icon:"",
-      color:  "",
+      icon: "",
+      color: "",
       variant: "",
     },
     {
       stepId: 2,
       stepLabel: "Proposals Registration Ended",
       icon: "",
-      color:  "",
+      color: "",
       variant: "",
     },
     {
       stepId: 3,
       stepLabel: "Voting Session Started",
       icon: "",
-      color:  "",
+      color: "",
       variant: "",
     },
     {
       stepId: 4,
       stepLabel: "Voting Session Ended",
       icon: "",
-      color:  "",
+      color: "",
       variant: "",
     },
     {
       stepId: 5,
       stepLabel: "Votes Tallied",
       icon: "",
-      color:  "",
+      color: "",
       variant: "",
     }
   ];

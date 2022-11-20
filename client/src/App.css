@@ -31,6 +31,7 @@ margin: 10px;
   flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
   
 }
 
@@ -51,12 +52,12 @@ margin: 10px;
 }
 
 .column70{
-  flex-basis: 70%;
+  flex-basis: 60%;
  
 }
 
 .column30{
-  flex-basis: 30%;
+  flex-basis: 40%;
  
 }
 
@@ -70,7 +71,7 @@ margin: 10px;
 
 #VotingTimeLine_main{
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
