@@ -211,9 +211,8 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       proposalLegth = proposalOldDataDesc.length + 1;
 
       setProposalOldDataDesc(proposalOldDataDesc => [...proposalOldDataDesc, { proposalId: proposalLegth, address: accounts[0], proposal: inputProposal }]);
-
-
       addProposal(inputProposal);
+      
     }
     handleCloseProposal();
   };

@@ -35,13 +35,8 @@ function Proposals({ isVoter, proposalOldData, selectedVotedValue, setSelectedVo
           
                 });
           
-          
                 setProposalsOldData(proposals);
-             
-        
-        
-        
-        
+            
               })();
 
 
@@ -56,7 +51,7 @@ function Proposals({ isVoter, proposalOldData, selectedVotedValue, setSelectedVo
             }
         }
 
-    }, [contract, accounts, proposalOldData ]);
+    }, [contract, accounts,proposalsOldData, proposalOldData,proposalDesc ]);
 
 
     const handleChange = (event) => {
