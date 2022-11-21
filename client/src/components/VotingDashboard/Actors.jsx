@@ -59,7 +59,7 @@ function Actors({ isOwner, isVoter , setIsVoter}) {
 
   return (
  
-    <div id="Content_main_actors" className="column50" >
+    <div id="Content_main_actors" className={ isOwner ?  "column50" : "column25" }>
     {/*  Voters and Owner Cars if Owner  */}
     {contract && isOwner && <div >
       <CardPerson address={owner} />

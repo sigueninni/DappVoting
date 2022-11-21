@@ -35,6 +35,11 @@ margin: 10px;
   
 }
 
+
+Content_main_proposals{
+  flex-basis: 50%;
+}
+
 #Content_main_actors{
   padding: 5px;;
   display: flex;
@@ -53,6 +58,11 @@ margin: 10px;
 
 .column70{
   flex-basis: 50%;
+ 
+}
+
+.column25{
+  flex-basis: 25%;
  
 }
 
@@ -93,8 +103,17 @@ margin: 10px;
             margin-top: 0;
             padding: 0;
 
+            
 }
 
 #CardPerson_main{
   margin : 5px;
+  border: 1px solid #9c27b0;
+  border-radius: 4px;
+  box-shadow: 2px 2px 2px #9c27b0;
+}
+
+
+#Content_main_proposals_chip{
+  font-size: medium;
 }

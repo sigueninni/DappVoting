@@ -3,7 +3,13 @@ import useEth from "../../contexts/EthContext/useEth";
 import { useState, useEffect } from "react";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import RepeatIcon from '@mui/icons-material/Repeat';
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import PlaylistAddCircleIcon from '@mui/icons-material/PlaylistAddCircle';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import CardPerson from "./CardPerson";
 import Alert from '@mui/material/Alert';
 import TextField from '@mui/material/TextField';
@@ -15,7 +21,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Snackbar from '@mui/material/Snackbar';
 import Actors from './Actors';
 import Proposals from './Proposals';
-
+import Slide from '@mui/material/Slide';
 
 function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
 
@@ -31,6 +37,8 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
   const [inputVoterAddress, setInputVoterAddress] = useState("");
   const [inputProposal, setInputProposal] = useState("");
   const [selectedVotedValue, setSelectedVotedValue] = React.useState(0);
+  const [proposalOldData, setProposalOldData] = useState([]);
+  const [winningProposal,setWinningProposal] = useState("");
   const [stateSb, setStateSb] = React.useState({
     messageSb: '',
     openSb: false,
@@ -38,11 +46,11 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
   const { openSb, messageSb } = stateSb;
   const [voterOldData, setVoterOldData] = useState("");
   const [voterData, setVoterData] = useState("");
-   
+
   // *************************************************
   // *************    Events Handling    *************
   // *************************************************  
-  
+
   const [proposalData, setProposalData] = useState("");
   const [proposalOldDataDesc, setProposalOldDataDesc] = useState("");
   const [wfEventData, setWfEventData] = useState("");
@@ -54,29 +62,50 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       (async function () {
 
 
-    /*  let oldEvents = await contract.getPastEvents('VoterRegistered', {
+
+        let oldEventsProposals = await contract.getPastEvents('ProposalRegistered', {
           fromBlock: 0,
           toBlock: 'latest'
-        });
+      });
 
-        oldEvents.forEach(event => {
-          voters.push({
-            address: event.returnValues.voterAddress,
-            isVoter: true
+      oldEventsProposals.forEach(event => {
+          // getOneProposal(event.returnValues.proposalId);
+
+          proposals.push({
+              proposalId: event.returnValues.proposalId,
+          
           });
 
-        });
-        setVoterOldData(voters);  */
-      
+      });
+
+
+      setProposalOldData(proposals);
+
+
+
+        /*  let oldEvents = await contract.getPastEvents('VoterRegistered', {
+              fromBlock: 0,
+              toBlock: 'latest'
+            });
+    
+            oldEvents.forEach(event => {
+              voters.push({
+                address: event.returnValues.voterAddress,
+                isVoter: true
+              });
+    
+            });
+            setVoterOldData(voters);  */
+
         await contract.events.ProposalRegistered({ fromBlock: "earliest" })
-        .on('data', event => {
-          let _voterAddress = event.returnValues.voterAddress;
-          //setVoterData(_voterAddress);
-          setStateSb({
-            openSb: true, messageSb: 'Proposal Registered'
-          });
+          .on('data', event => {
+            let _voterAddress = event.returnValues.voterAddress;
+            //setVoterData(_voterAddress);
+            setStateSb({
+              openSb: true, messageSb: 'Proposal Registered'
+            });
 
-        });
+          });
 
 
         await contract.events.VoterRegistered({ fromBlock: "earliest" })
@@ -89,7 +118,7 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
 
           });
 
-          await contract.events.Voted({ fromBlock: "earliest" })
+        await contract.events.Voted({ fromBlock: "earliest" })
           .on('data', event => {
             setStateSb({
               openSb: true, messageSb: 'Has Voted!'
@@ -115,14 +144,23 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       })();
 
       //Setting isVoter
-     /*  if ([...voterOldData].filter(v => v.address == accounts[0]).length > 0) {
-        setIsVoter(true);
-      } else { setIsVoter(false); } */
+      /*  if ([...voterOldData].filter(v => v.address == accounts[0]).length > 0) {
+         setIsVoter(true);
+       } else { setIsVoter(false); } */
     }
 
-  }, [contract,  accounts]); //voterOldData,
+  }, [contract, accounts]); //voterOldData,
 
 
+  const [openW, setOpenW] = React.useState(false);
+
+  const handleClickOpenW = () => {
+    setOpenW(true);
+  };
+
+  const handleCloseW = () => {
+    setOpenW(false);
+  };
 
 
   const handleClickSb = (newState) => () => {
@@ -170,20 +208,20 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
     let proposalLegth = 0;
     if (inputProposal !== '') {
       const newProposal = { proposal: inputProposal };
-      proposalLegth = proposalOldDataDesc.length + 1 ;
+      proposalLegth = proposalOldDataDesc.length + 1;
 
-      setProposalOldDataDesc(proposalOldDataDesc => [...proposalOldDataDesc, { proposalId : proposalLegth, address : accounts[0], proposal : inputProposal }]);
-    
+      setProposalOldDataDesc(proposalOldDataDesc => [...proposalOldDataDesc, { proposalId: proposalLegth, address: accounts[0], proposal: inputProposal }]);
+
 
       addProposal(inputProposal);
     }
     handleCloseProposal();
   };
-  /*   const handleInputVoterAddressChange = async e => {
-      debugger;
-      setInputVoterAddress(this.refs.myField.getValue());
-    }; */
 
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+  
 
   const refreshWFStatus = async () => {
     onChangeWorkflowStatus();
@@ -199,49 +237,82 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
   };
 
 
- const  getWinningProposalID = async () => {
-  const WinningProposalID = await contract.methods.winningProposalID().call({ from: accounts[0] });
-  alert(WinningProposalID);
-  
-};
+  const getWinningProposalID = async () => {
+    const WinningProposalID = await contract.methods.winningProposalID().call({ from: accounts[0] });
+    const WinningProposal = await contract.methods.getOneProposal(WinningProposalID).call({from: accounts[0]});
+    setWinningProposal(WinningProposal.description);
+    handleClickOpenW();
+  };
 
   // *************************************************
   // *************    Owner actions    ***************
   // *************************************************
   const startProposalsRegistering = async () => {
-    await contract.methods.startProposalsRegistering().send({ from: accounts[0] });
-    refreshWFStatus();
+    try {
+      await contract.methods.startProposalsRegistering().send({ from: accounts[0] });
+      refreshWFStatus();
+    } catch (err) {
+      console.log(err);
+    }
   };
   const endProposalsRegistering = async () => {
-    await contract.methods.endProposalsRegistering().send({ from: accounts[0] });
-    refreshWFStatus();
+    try {
+      await contract.methods.endProposalsRegistering().send({ from: accounts[0] });
+      refreshWFStatus();
+    } catch (err) {
+      console.log(err);
+    }
   };
   const startVotingSession = async () => {
-    await contract.methods.startVotingSession().send({ from: accounts[0] });
-    refreshWFStatus();
+    try {
+      await contract.methods.startVotingSession().send({ from: accounts[0] });
+      refreshWFStatus();
+    } catch (err) {
+      console.log(err);
+    }
   };
   const endVotingSession = async () => {
-    await contract.methods.endVotingSession().send({ from: accounts[0] });
-    refreshWFStatus();
+    try {
+      await contract.methods.endVotingSession().send({ from: accounts[0] });
+      refreshWFStatus();
+    } catch (err) {
+      console.log(err);
+    }
   };
   const tallyVotes = async () => {
-    await contract.methods.tallyVotes().send({ from: accounts[0] });
-    refreshWFStatus();
+    try {
+      await contract.methods.tallyVotes().send({ from: accounts[0] });
+      refreshWFStatus();
+    } catch (err) {
+      console.log(err);
+    }
   };
   const addVoter = async (address) => {
-    setOpen(true);
-    await contract.methods.addVoter(address).send({ from: accounts[0] });
+    try {
+      setOpen(true);
+      await contract.methods.addVoter(address).send({ from: accounts[0] });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // *************************************************
   // *************    Voter actions    ***************
   // *************************************************
   const addProposal = async (proposal) => {
-    await contract.methods.addProposal(proposal).send({ from: accounts[0] });
+    try {
+      await contract.methods.addProposal(proposal).send({ from: accounts[0] });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const setVote = async () => {
-    await contract.methods.setVote(selectedVotedValue).send({ from: accounts[0] });
+    try {
+      await contract.methods.setVote(selectedVotedValue).send({ from: accounts[0] });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
 
@@ -249,7 +320,7 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
   return (
     <div id="Content_main" className="column70">
 
-    <Dialog maxWidth="xl" open={open} onClose={handleCloseAddVoter}>
+      <Dialog maxWidth="xl" open={open} onClose={handleCloseAddVoter}>
         <DialogTitle>Register a new Voter</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -259,7 +330,7 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
             autoFocus
             margin="dense"
             id="address"
-            label="Voter Address ->"
+            label="Voter Address"
             type="text"
             fullWidth
             variant="standard"
@@ -304,6 +375,24 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       </Dialog>
 
 
+      <Dialog
+        open={openW}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseW}
+        aria-describedby="alert-dialog-slide-description"
+      >
+      <DialogTitle>The winning Proposal Id is :</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            {winningProposal}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseW}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
 
       <Snackbar open={openSb} autoHideDuration={5000} onClose={handleCloseSb}>
         <Alert onClose={handleCloseSb} severity="info" sx={{ width: '100%' }}>
@@ -311,7 +400,7 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
         </Alert>
       </Snackbar>
 
-      <div id="Content_main_actions" className="column50">
+      <div id="Content_main_actions" className="column25">
         {/*   *********************************************
       ***************Owner*************************
       ********************************************* */}
@@ -319,41 +408,42 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
         {isOwner && WorkflowStatus == 0 &&
           < div >
             <Stack direction="row" spacing={2}>
-              <Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={startProposalsRegistering}>start Proposals Registering</Button>
-              <Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={handleOpenAddVoter}>add a Voter</Button>
+              <Button color="secondary" variant="contained" endIcon={<PlayCircleFilledIcon />} onClick={startProposalsRegistering}>start Proposals Registering</Button>
+              <Button color="secondary" variant="contained" endIcon={<PersonAddIcon />} onClick={handleOpenAddVoter}>add a Voter</Button>
             </Stack>
           </div>
 
         }
 
+
         {/* WorkflowStatus at  ProposalsRegistrationStarted */}
         {
           isOwner && WorkflowStatus == 1 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={endProposalsRegistering}>end Proposals Registering</Button> </div>
+          <div><Button color="secondary" variant="contained" endIcon={<StopCircleIcon />} onClick={endProposalsRegistering}>end Proposals Registering</Button> </div>
         }
 
         {/* WorkflowStatus at  ProposalsRegistrationEnded */}
         {
           isOwner && WorkflowStatus == 2 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={startVotingSession}>start Voting Session</Button> </div>
+          <div><Button color="secondary" variant="contained" endIcon={<PlayCircleFilledIcon />} onClick={startVotingSession}>start Voting Session</Button> </div>
         }
 
         {/* WorkflowStatus at  VotingSessionStarted */}
         {
           isOwner && WorkflowStatus == 3 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={endVotingSession}>end Voting Session</Button> </div>
+          <div><Button color="secondary" variant="contained" endIcon={<StopCircleIcon />} onClick={endVotingSession}>end Voting Session</Button> </div>
         }
 
         {/* WorkflowStatus at  VotingSessionEnded */}
         {
           isOwner && WorkflowStatus == 4 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={tallyVotes}>tally Votes</Button> </div>
+          <div><Button color="secondary" variant="contained" endIcon={<AddCircleIcon />} onClick={tallyVotes}>tally Votes</Button> </div>
         }
 
-          {
+      {/*   {
           isOwner && WorkflowStatus == 5 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={getWinningProposalID}>get Winning Proposal</Button> </div>
-        }
+          <div><Button color="secondary" variant="contained" endIcon={<EmojiEventsIcon />} onClick={getWinningProposalID}>get Winning Proposal</Button> </div>
+        } */}
 
 
         {/*   *********************************************
@@ -361,21 +451,21 @@ function Content({ isOwner, WorkflowStatus, onChangeWorkflowStatus }) {
       ********************************************* */}
         {/* WorkflowStatus at  ProposalsRegistrationStarted */}
         {isVoter && WorkflowStatus == 1 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={handleOpenProposal}>add a Proposal</Button> </div>
+          <div><Button color="secondary" variant="contained" endIcon={<PlaylistAddCircleIcon />} onClick={handleOpenProposal}>add a Proposal</Button> </div>
         }
 
         {isVoter && WorkflowStatus == 3 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={setVote}>Vote</Button> </div>
+          <div><Button color="secondary" variant="contained" endIcon={<HowToRegIcon />} onClick={setVote}>Vote</Button> </div>
         }
-      </div>
+      
 
       {
-          isVoter && WorkflowStatus == 5 &&
-          <div><Button color="secondary" variant="contained" endIcon={<RepeatIcon />} onClick={getWinningProposalID}>get Winning Proposal</Button> </div>
-        }
-
-    <Actors isOwner = {isOwner} isVoter = {isVoter}  setIsVoter = {setIsVoter}/> 
-    <Proposals isVoter = {isVoter} proposalOldDataDesc={proposalOldDataDesc} selectedVotedValue={selectedVotedValue} setSelectedVotedValue = {setSelectedVotedValue} /> 
+        isVoter && WorkflowStatus == 5 &&
+        <div><Button color="secondary" variant="contained" endIcon={<EmojiEventsIcon />} onClick={getWinningProposalID}>get Winning Proposal</Button> </div>
+      }
+</div>
+      <Actors isOwner={isOwner} isVoter={isVoter} setIsVoter={setIsVoter} />
+      <Proposals isVoter={isVoter}  proposalOldData={proposalOldData} selectedVotedValue={selectedVotedValue} setSelectedVotedValue={setSelectedVotedValue} />
 
     </div >
   );
