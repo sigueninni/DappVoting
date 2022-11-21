@@ -1,6 +1,18 @@
-# React Truffle Box
+# ⚡️ Projet - Système de vote 3
 
-This box comes with everything you need to start using Truffle to write, compile, test, and deploy smart contracts, and interact with them from a React app.
+This is project number 3 for Alyra Training
+
+## Specifications
+Votre Dapp doit permettre : 
+- l’enregistrement d’une liste blanche d'électeurs. 
+- à l'administrateur de commencer la session d'enregistrement de la proposition.
+- aux électeurs inscrits d’enregistrer leurs propositions.
+- à l'administrateur de mettre fin à la session d'enregistrement des propositions.
+- à l'administrateur de commencer la session de vote.
+- aux électeurs inscrits de voter pour leurs propositions préférées.
+- à l'administrateur de mettre fin à la session de vote.
+- à l'administrateur de comptabiliser les votes.
+- à tout le monde de consulter le résultat.
 
 ## Installation
 
